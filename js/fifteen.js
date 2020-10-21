@@ -1,6 +1,6 @@
 'use strict';
 
-const initPuzzleGame = () => {
+const initFifteenGame = () => {
 
   let grid = [
     ['07', '10', '14', '11'],
@@ -94,4 +94,4 @@ const initPuzzleGame = () => {
   })
 }
 
-window.addEventListener('load', initPuzzleGame);
+window.addEventListener('load', initFifteenGame);
