@@ -80,9 +80,8 @@ const initPuzzleGame = () => {
         emptyCell.appendChild(buffImg);
         grid[emptyCellCoordRow][emptyCellCoordCol] = grid[cellCoordToSwapRow][cellCoordToSwapCol];
         grid[cellCoordToSwapRow][cellCoordToSwapCol] = '00';
-        console.log(grid);
       } catch {
-        console.log('Unable to move the cell');
+        alert('Unable to move the cell');
       }
 
       let gridInStr = grid.join(',').replace('00','').replace(',,',',');
