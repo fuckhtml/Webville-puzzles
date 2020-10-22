@@ -2,43 +2,39 @@
 
 const initFifteenGame = () => {
 
-  let grid = [
-    ['07', '10', '14', '11'],
-    ['12', '06', '05', '13'],
-    ['08', '00', '01', '15'],
-    ['04', '02', '09', '03'],
-  ];
+  const renderPuzzleGrid = () => {
+    let puzzleGrid = document.createElement('tbody'); 
+    for (let i = 0; i < grid.length; i++) {
+      let tr = document.createElement('tr');
+      for (let j = 0; j < grid[i].length; j++ ) {
+        let td = document.createElement('td');
+        td.id = 'cell' + (i + 1) + (j + 1);
 
-  // for tests
-  // let grid = [
-  //   ['01', '02', '03', '04'],
-  //   ['05', '06', '07', '08'],
-  //   ['09', '00', '11', '12'],
-  //   ['13', '10', '14', '15'],
-  // ];
+        let img = document.createElement('img');
+        img.src = `images/${grid[i][j]}.png`;
+        img.alt = grid[i][j];
+        img.width = '69';
+        img.height = '69';
 
-  let puzzleGrid = document.createElement('tbody'); 
-  for (let i = 0; i < grid.length; i++) {
-    let tr = document.createElement('tr');
-    for (let j = 0; j < grid[i].length; j++ ) {
-      let td = document.createElement('td');
-      td.id = 'cell' + (i + 1) + (j + 1);
-
-      let img = document.createElement('img');
-      img.src = `images/${grid[i][j]}.png`;
-      img.alt = grid[i][j];
-      img.width = '69';
-      img.height = '69';
-
-      td.append(img);
-      tr.append(td);
+        td.append(img);
+        tr.append(td);
+      }
+      puzzleGrid.append(tr);
     }
-    puzzleGrid.append(tr);
+    document.querySelector('#puzzleGrid table').append(puzzleGrid);
   }
-  document.querySelector('#puzzleGrid table').append(puzzleGrid);
+  
+  const isGameFinished = () => {
+    let gridInStr = grid.join(',').replace('00','').replace(',,',',');
+    return (gridInStr === '01,02,03,04,05,06,07,08,09,10,11,12,13,14,15' ? true : false);
+  }
 
-  const puzzleGridNode = document.querySelector('#puzzleGrid tbody');
-  puzzleGridNode.addEventListener('click', function(event) {
+  const finishGame = () => {
+    alert('You win!');
+    window.location.reload();
+  }
+
+  const moveEmptyCell = (event) => {
     if (event.target.tagName === 'IMG') {
       let emptyCell = puzzleGridNode.querySelector('img[alt="00"]').parentElement;
       let emptyCellCoord = parseInt(emptyCell.id.slice(-2)); // [1, 4][1, 4]
@@ -83,15 +79,34 @@ const initFifteenGame = () => {
       } catch {
         alert('Unable to move the cell');
       }
-
-      let gridInStr = grid.join(',').replace('00','').replace(',,',',');
-      if (gridInStr === '01,02,03,04,05,06,07,08,09,10,11,12,13,14,15') {
-        alert('You win!');
-        window.location.reload();
-      }
-
     }
-  })
+  }
+
+
+  // Main Game Logic:
+
+  let grid = [
+    ['07', '10', '14', '11'],
+    ['12', '06', '05', '13'],
+    ['08', '00', '01', '15'],
+    ['04', '02', '09', '03'],
+  ];
+
+//  for tests
+  // let grid = [
+  //   ['01', '02', '03', '04'],
+  //   ['05', '06', '07', '08'],
+  //   ['09', '00', '11', '12'],
+  //   ['13', '10', '14', '15'],
+  // ];
+
+  renderPuzzleGrid();
+
+  const puzzleGridNode = document.querySelector('#puzzleGrid tbody');
+  puzzleGridNode.addEventListener('click', function(event) {
+      moveEmptyCell(event);
+      if (isGameFinished()) finishGame();
+  });
 }
 
 window.addEventListener('load', initFifteenGame);
